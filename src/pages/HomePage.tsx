@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 import Footer from '../components/Footer/Footer';
 import AppBar from '../components/AppBar/AppBar';
-import UserAdder from '../components/UserManagers/UserAdder';
-import { UserRemover } from '../components/UserManagers/UserRemover';
+// import UserAdder from '../components/UserManagers/UserAdder';
 import DisplayTable from '../components/Tables/DisplayTable';
 
 const HomePage = () => {
@@ -13,19 +12,15 @@ const HomePage = () => {
   return (
     <>
       <AppBar isOpen={isOpen} setIsOpen={setIsOpen} />
-      <h1 className="justify-center text-xl font-bold text-red-500">This is the Homepage</h1>
-      <div className="flex flex-row">
-        <DisplayTable />
-        <div className="flex-auto">
-          <h1>Test</h1>
+      <div className="p-8">
+        <div className="flex flex-row">
+          <DisplayTable />
+          <div className="flex flex-auto outline outline-2">
+            <h1>Other random component</h1>
+          </div>
         </div>
+        <Footer />
       </div>
-      <UserAdder />
-      <UserRemover />
-      {/* <button className="btn" onClick={reset}>
-        Reset Users
-      </button> */}
-      <Footer />
     </>
   );
 };

@@ -9,15 +9,12 @@ type UserStore = {
   getUser: (id: string) => User | undefined;
   updateUser: (user: User) => void;
   removeUser: (id: string) => void;
+  isEmpty: () => boolean;
   reset: () => void;
   // addProject: (name: string, projects: []) => void;
   // removeProject: (projName: string) => void;
   // addUpdates: (updates: []) => void;
   // removeUpdate: (id: string) => void;
-};
-
-const initialState = {
-  userList: [],
 };
 
 export const useUserStore = create<UserStore>()(
@@ -43,6 +40,14 @@ export const useUserStore = create<UserStore>()(
         set((state) => ({
           userList: state.userList.filter((user) => user.id !== id),
         }));
+      },
+      isEmpty: () => {
+        const { userList } = get();
+        if (userList.length > 0) {
+          return false;
+        } else {
+          return true;
+        }
       },
       reset: () => {
         set(() => ({

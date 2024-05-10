@@ -1,7 +1,7 @@
 import { useUserStore } from '../../store';
 import { useState, ChangeEvent } from 'react';
 
-export const UserRemover = () => {
+const UserRemover = () => {
   const { removeUser } = useUserStore();
   const [user, setUser] = useState('');
 
@@ -21,7 +21,7 @@ export const UserRemover = () => {
   return (
     <>
       <button
-        className="btn"
+        className="btn bg-red-600 text-white"
         onClick={() =>
           (document.getElementById('removeUserModal') as HTMLDialogElement).showModal()
         }
@@ -30,7 +30,7 @@ export const UserRemover = () => {
       </button>
       <dialog id="removeUserModal" className="modal">
         <div className="w-11/1212 maw-w-5xl modal-box">
-          <h1>Remove a User</h1>
+          <h1>Remove a User (select user from list, inactive delete becomes active</h1>
           <form onSubmit={handleSubmit} className="pb-8 pt-8">
             <label htmlFor="userNameInput" className="form-controll w-full max-w-xs">
               <div className="label">
@@ -58,3 +58,5 @@ export const UserRemover = () => {
     </>
   );
 };
+
+export default UserRemover;

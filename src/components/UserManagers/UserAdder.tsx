@@ -96,51 +96,56 @@ export const UserAdder = (props: AdduserDialogProps) => {
   return (
     <>
       <button
-        className="btn"
+        className="btn bg-dha-blue text-white hover:bg-dha-dark-blue-950"
         onClick={() => (document.getElementById('addUserModal') as HTMLDialogElement).showModal()}
       >
         Add User
       </button>
       <dialog id="addUserModal" className="modal">
-        <div className="w-11/1212 maw-w-5xl modal-box">
-          <h1>Add a New User</h1>
-          <form onSubmit={handleSubmit} className="pb-8 pt-8">
-            <label htmlFor="userNameInput" className="form-controll w-full max-w-xs">
-              <div className="label">
-                <span className="label-text">First and Last Name</span>
-              </div>
-              <input
-                id="userNameInput"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Full Name"
-                className="input input-bordered w-full max-w-xs"
-              />
-            </label>
-            <label htmlFor="userEmailInput" className="form-controll w-full max-w-xs">
-              <input
-                id="userEmailInput"
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input input-bordered w-full max-w-xs"
-              />
-            </label>
-            <br />
-            <br />
+        <div className="modal-box w-9/12 max-w-7xl p-8">
+          <h1 className="text-xl font-semibold">Add a New User</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-8 flex items-center space-x-6">
+              <label htmlFor="userNameInput" className="form-controll w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text text-lg">First and Last Name</span>
+                </div>
+                <input
+                  id="userNameInput"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Full Name"
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </label>
+              <label htmlFor="userEmailInput" className="form-controll w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text text-lg">Email Address</span>
+                </div>
+                <input
+                  id="userEmailInput"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </label>
+            </div>
 
             {/* User Projects */}
-            <div className="space-y-4">
-              <div className="p-1 font-bold">User Projects</div>
+            <div className="mt-4">
+              <div className="text-lg font-bold">User Projects</div>
               {projects.map((project, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <div className="input-group">
+                <>
+                  <div key={index} className="flex items-end space-x-6 pb-4">
+                    {/* <div className="input-group"> */}
                     <label className="form-controll w-full max-w-xs">
                       <div className="label">
-                        <span className="label-text">Project Name</span>
+                        <span className="label-text text-lg">Project Name</span>
                       </div>
+
                       <input
                         type="text"
                         value={project.projName}
@@ -151,7 +156,7 @@ export const UserAdder = (props: AdduserDialogProps) => {
                     </label>
                     <label className="form-controll w-full max-w-xs">
                       <div className="label">
-                        <span className="label-text">Ticket Number</span>
+                        <span className="label-text text-lg">Ticket Number</span>
                       </div>
                       <input
                         type="text"
@@ -164,25 +169,39 @@ export const UserAdder = (props: AdduserDialogProps) => {
                     <button
                       type="button"
                       onClick={() => handleRemoveProject(index)}
-                      className="rounded-md bg-red-500 p-2 text-white hover:bg-red-700"
+                      className="btn ml-4 border-2 border-red-500 bg-transparent px-4 py-2.5 text-lg text-red-600 hover:border-transparent hover:bg-red-600 hover:text-white"
                     >
-                      X
+                      Delete
                     </button>
+                    {/* </div> */}
                   </div>
-                </div>
+                  <hr className="border-1 border-dashed border-gray-500" />
+                </>
               ))}
             </div>
 
-            <button type="button" className="btn" onClick={handleAddProject}>
-              Add Project
+            <button
+              type="button"
+              className="hover:bg-gray-150 btn border-transparent bg-transparent text-lg text-dha-blue hover:border-transparent"
+              onClick={handleAddProject}
+            >
+              + Add Project
             </button>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+
+            <div className="card-actions justify-end">
+              <button
+                type="submit"
+                className="btn bg-dha-blue px-4 py-2.5 text-lg text-white hover:bg-dha-dark-blue-950"
+              >
+                Submit
+              </button>
+            </div>
           </form>
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">✕</button>
+              <button className="btn btn-circle btn-ghost btn-sm absolute right-7 top-7 text-lg">
+                x
+              </button>
             </form>
           </div>
         </div>
