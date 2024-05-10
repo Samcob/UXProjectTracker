@@ -13,8 +13,13 @@ const UserRemover = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (user !== '') {
-      removeUser(user);
+    if (user != '') {
+      const deletedUser = user;
+      removeUser(deletedUser);
+      setUser('');
+      alert("The user '" + deletedUser + "' has been removed from the user list.");
+    } else {
+      alert('Please enter a valid user.');
     }
   };
 
@@ -30,7 +35,7 @@ const UserRemover = () => {
       </button>
       <dialog id="removeUserModal" className="modal">
         <div className="w-11/1212 maw-w-5xl modal-box">
-          <h1>Remove a User (select user from list, inactive delete becomes active</h1>
+          <h1>Remove a User select user from list, inactive delete becomes active</h1>
           <form onSubmit={handleSubmit} className="pb-8 pt-8">
             <label htmlFor="userNameInput" className="form-controll w-full max-w-xs">
               <div className="label">
@@ -39,6 +44,7 @@ const UserRemover = () => {
               <input
                 id="userNameInput"
                 type="text"
+                value={user}
                 onChange={handleChange}
                 placeholder="Full Name"
                 className="input input-bordered w-full max-w-xs"

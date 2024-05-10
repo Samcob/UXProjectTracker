@@ -3,6 +3,7 @@ import { useUserStore } from '../../store';
 import { useState, useEffect } from 'react';
 import { z } from 'zod';
 import { Project } from '../../types/user';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface AdduserDialogProps {
   onClose: () => void;
@@ -102,10 +103,10 @@ export const UserAdder = (props: AdduserDialogProps) => {
         Add User
       </button>
       <dialog id="addUserModal" className="modal">
-        <div className="modal-box w-9/12 max-w-7xl p-8">
+        <div className="modal-box w-7/12 max-w-7xl p-8">
           <h1 className="text-xl font-semibold">Add a New User</h1>
           <form onSubmit={handleSubmit}>
-            <div className="mb-8 flex items-center space-x-6">
+            <div className="mb-8 ml-4 flex items-center space-x-6">
               <label htmlFor="userNameInput" className="form-controll w-full max-w-xs">
                 <div className="label">
                   <span className="label-text text-lg">First and Last Name</span>
@@ -139,13 +140,12 @@ export const UserAdder = (props: AdduserDialogProps) => {
               <div className="text-lg font-bold">User Projects</div>
               {projects.map((project, index) => (
                 <>
+                  {index != 0 && <hr className="border-1 border-gray-400" />}
                   <div key={index} className="flex items-end space-x-6 pb-4">
-                    {/* <div className="input-group"> */}
-                    <label className="form-controll w-full max-w-xs">
+                    <label className="form-controll ml-4 w-full max-w-xs">
                       <div className="label">
                         <span className="label-text text-lg">Project Name</span>
                       </div>
-
                       <input
                         type="text"
                         value={project.projName}
@@ -173,16 +173,17 @@ export const UserAdder = (props: AdduserDialogProps) => {
                     >
                       Delete
                     </button>
-                    {/* </div> */}
                   </div>
-                  <hr className="border-1 border-dashed border-gray-500" />
+                  {/* {index >= 1 && index !== projects.length && (
+                    <hr className="border-1 border-gray-400" />
+                  )} */}
                 </>
               ))}
             </div>
 
             <button
               type="button"
-              className="hover:bg-gray-150 btn border-transparent bg-transparent text-lg text-dha-blue hover:border-transparent"
+              className="hover:bg-gray-150 btn mt-4 border-transparent bg-transparent text-lg text-dha-blue hover:border-transparent"
               onClick={handleAddProject}
             >
               + Add Project
@@ -200,7 +201,7 @@ export const UserAdder = (props: AdduserDialogProps) => {
           <div className="modal-action">
             <form method="dialog">
               <button className="btn btn-circle btn-ghost btn-sm absolute right-7 top-7 text-lg">
-                x
+                <XMarkIcon aria-label="close menu" className="size-5 text-black" />
               </button>
             </form>
           </div>
