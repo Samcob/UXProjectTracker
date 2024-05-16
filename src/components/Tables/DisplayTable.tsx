@@ -8,7 +8,7 @@ const DisplayTable = () => {
   const { userList, isEmpty } = useUserStore();
 
   return (
-    <div className="card mr-8 w-3/12 bg-white shadow-xl outline outline-1 outline-slate-300">
+    <div className="card mr-8 w-5/12 bg-white shadow-xl outline outline-1 outline-slate-300">
       <div className="card-body">
         <h2 className="card-title">Active Projects</h2>
         {isEmpty() === false ? (
@@ -22,12 +22,13 @@ const DisplayTable = () => {
             <tbody>
               {userList.map((user, index) => (
                 <tr key={index}>
-                  <th className="align-top text-lg">{user.name}</th>
+                  <th className="align-center text-lg">{user.name}</th>
                   <td className="">
                     {user.projects.map((project, index) => [
                       <NavLink
                         key={index}
-                        to={'/ProjectPage/' + project.projName}
+                        to={'/ProjectPage/'}
+                        state={{ project: project }}
                         className="text-blue-500 hover:border-b-secondary-accent-font-color hover:font-extrabold"
                       >
                         {

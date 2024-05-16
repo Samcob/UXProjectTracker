@@ -9,7 +9,9 @@ export interface Project {
     id: string;
     projName: string;
     projTicket: string;
+    projSprint: number;
     projUpdates: Updates[];
+    projHistory: Updates[];
 }
 
 export interface User {

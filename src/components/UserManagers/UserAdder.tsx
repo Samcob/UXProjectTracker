@@ -83,7 +83,14 @@ export const UserAdder = (props: AdduserDialogProps) => {
 
   const handleAddProject = () => {
     if (projects.length < 3) {
-      const newProject = { id: nanoid(), projName: '', projTicket: '', projUpdates: [] };
+      const newProject = {
+        id: nanoid(),
+        projName: '',
+        projTicket: '',
+        projSprint: 0,
+        projUpdates: [],
+        projHistory: [],
+      };
       setProjects([...projects, newProject]);
     }
   };

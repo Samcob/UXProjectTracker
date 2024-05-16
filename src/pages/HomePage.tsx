@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import Footer from '../components/Footer/Footer';
 import AppBar from '../components/AppBar/AppBar';
-// import UserAdder from '../components/UserManagers/UserAdder';
+import ProjectAdder from '../components/ProjectManagers/ProjectAdder';
 import DisplayTable from '../components/Tables/DisplayTable';
 
 const HomePage = () => {
@@ -17,6 +17,7 @@ const HomePage = () => {
           <DisplayTable />
           <div className="flex flex-auto outline outline-2">
             <h1>Other random component</h1>
+            <ProjectAdder />
           </div>
         </div>
         <Footer />

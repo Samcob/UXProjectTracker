@@ -1,17 +1,16 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { User } from '../src/types/user';
+import { User, Project } from '../src/types/user';
 
 type UserStore = {
   userList: User[];
   addUser: (user: User) => void;
-  getUser: (id: string) => User | undefined;
+  getUser: (name: string) => User | undefined;
   updateUser: (user: User) => void;
   removeUser: (id: string) => void;
   isEmpty: () => boolean;
-  reset: () => void;
-  // addProject: (name: string, projects: []) => void;
+  addProject: (user: User, project: Project) => void;
   // removeProject: (projName: string) => void;
   // addUpdates: (updates: []) => void;
   // removeUpdate: (id: string) => void;
@@ -29,7 +28,7 @@ export const useUserStore = create<UserStore>()(
       },
       getUser: (id: string) => {
         const { userList } = get();
-        return userList.find((user) => user.id === id);
+        return userList.find((user) => user.id == id);
       },
       updateUser: (user: User) => {
         set((state) => ({
@@ -49,10 +48,14 @@ export const useUserStore = create<UserStore>()(
           return true;
         }
       },
-      reset: () => {
-        set(() => ({
-          userList: [],
-        }));
+      addProject: (selUser, project) => {
+        const { userList } = get();
+        const userIndex = userList.findIndex((user) => user.id === selUser.id);
+        userList[userIndex].projects.push(project);
+        console.log(userList[userIndex].projects);
+        // set((state) => ({
+        //   userList[userIndex].projects: [...state.userList.projects, project],
+        // }));
       },
     })),
     {
