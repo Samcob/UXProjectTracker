@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useUserStore } from '../../store';
-import { Project } from '../../types/user';
+import { Project, User } from '../../types/user';
 import { nanoid } from 'nanoid';
 
 const ProjectAdder = () => {
@@ -12,12 +12,21 @@ const ProjectAdder = () => {
     projUpdates: [],
     projHistory: [],
   };
+
+  const defaultUser = {
+    id: '',
+    name: '',
+    email: '',
+    projects: [],
+  }
+
+
   const { userList, addProject, getUser } = useUserStore();
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User>(defaultUser);
   const [project, setProject] = useState<Project>(defaultProject);
 
   const handleSubmit = () => {
-    const user = getUser(selectedUser);
+    const user = getUser(selectedUser.id);
     if (user != undefined) {
       addProject(selectedUser, project);
       setProject(defaultProject);
@@ -34,7 +43,12 @@ const ProjectAdder = () => {
 
   const handleUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value != '') {
-      setSelectedUser(e.target.value);
+      const user= userList.find((user) => user.name === e.target.value);
+      if(user != undefined){
+        setSelectedUser(user);
+      } else {
+        alert("Invalid user");
+      }
     }
   };
 

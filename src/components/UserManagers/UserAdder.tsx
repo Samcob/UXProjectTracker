@@ -27,10 +27,10 @@ export const UserAdder = (props: AdduserDialogProps) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  //Debugging to view userList
-  useEffect(() => {
-    console.log(userList);
-  }, [userList]);
+  // //Debugging to view userList
+  // useEffect(() => {
+  //   console.log(userList);
+  // }, [userList]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
