@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { useUserStore } from '../../store';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
 import { Project } from '../../types/user';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -21,7 +21,7 @@ const UserSchema = z.object({
 });
 
 export const UserAdder = (props: AdduserDialogProps) => {
-  const { userList, addUser } = useUserStore();
+  const { addUser } = useUserStore();
 
   const [projects, setProjects] = useState<Array<Project>>([]);
   const [name, setName] = useState('');

@@ -1,5 +1,5 @@
 import UserAdder from './UserAdder';
-import { UserRemover } from './UserRemover';
+import UserRemover from './UserRemover';
 
 const UserManager = () => {
   return (

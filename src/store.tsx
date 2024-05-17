@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { User, Project } from '../src/types/user';
+import { produce } from 'immer';
 
 type UserStore = {
   userList: User[];
@@ -18,50 +19,56 @@ type UserStore = {
 
 export const useUserStore = create<UserStore>()(
   devtools(
-    // persist(
-    immer((set, get) => ({
-      userList: [],
-      addUser: (user: User) => {
-        set((state) => ({
-          userList: [...state.userList, user],
-        }));
-      },
-      getUser: (id: string) => {
-        const { userList } = get();
-        return userList.find((user) => user.id == id);
-      },
-      updateUser: (user: User) => {
-        set((state) => ({
-          users: state.userList.map((u) => (u.id === user.id ? user : u)),
-        }));
-      },
-      removeUser: (id: string) => {
-        set((state) => ({
-          userList: state.userList.filter((user) => user.id !== id),
-        }));
-      },
-      isEmpty: () => {
-        const { userList } = get();
-        if (userList.length > 0) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-      addProject: (selUser, project) => {
-        const { userList } = get();
-        const userIndex = userList.findIndex((user) => user.id === selUser.id);
-        userList[userIndex].projects.push(project);
-        console.log(userList[userIndex].projects);
-        // set((state) => ({
-        //   userList[userIndex].projects: [...state.userList.projects, project],
-        // }));
-      },
-    })),
-    {
-      name: 'user-list',
-    }
-    // )
+    persist(
+      immer((set, get) => ({
+        userList: [],
+        addUser: (user: User) => {
+          set((state) => ({
+            userList: [...state.userList, user],
+          }));
+        },
+        getUser: (id: string) => {
+          const { userList } = get();
+          return userList.find((user) => user.id === id);
+        },
+        updateUser: (user: User) => {
+          set((state) => ({
+            users: state.userList.map((u) => (u.id === user.id ? user : u)),
+          }));
+        },
+        removeUser: (id: string) => {
+          set((state) => ({
+            userList: state.userList.filter((user) => user.id !== id),
+          }));
+        },
+        isEmpty: () => {
+          const { userList } = get();
+          if (userList.length > 0) {
+            return false;
+          } else {
+            return true;
+          }
+        },
+        //try to match by id instad of name to prevent errors when two names are the same
+        addProject: (user, project) => {
+          const { userList } = get();
+          const userIndex = userList.findIndex((relUser) => relUser.id === user.id);
+          set(
+            produce((state) => {
+              state.userList[userIndex].projects.push({ project });
+            })
+          );
+          // set((state) => ({
+          //   // userList: {...state.userList, userList[userIndex]: {...state.userList[userIndex].projects, project}}
+          //   userList: [...state.userList, selectedUser: [...state.userList[userIndex].projects, project]],
+
+          // }))
+        },
+      })),
+      {
+        name: 'user-list',
+      }
+    )
   )
 
   // addNewProject: (name: string, projects: Projects[]) => {

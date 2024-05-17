@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserStore } from '../../store';
 import { Project, User } from '../../types/user';
 import { nanoid } from 'nanoid';
@@ -18,21 +18,26 @@ const ProjectAdder = () => {
     name: '',
     email: '',
     projects: [],
-  }
+  };
 
-
-  const { userList, addProject, getUser } = useUserStore();
+  const { userList, addProject } = useUserStore();
   const [selectedUser, setSelectedUser] = useState<User>(defaultUser);
   const [project, setProject] = useState<Project>(defaultProject);
 
+  //debugging tool checking to see if various steps are being met
+  useEffect(() => {
+    const user = userList.find((user) => user.name === selectedUser.name);
+    console.log(user);
+    console.log(userList);
+  }, [selectedUser, userList]);
+
   const handleSubmit = () => {
-    const user = getUser(selectedUser.id);
-    if (user != undefined) {
+    if (selectedUser != undefined) {
       addProject(selectedUser, project);
-      setProject(defaultProject);
     } else {
       alert('Unable to find selected User.');
     }
+    setProject(defaultProject);
   };
 
   const handleChange = <K extends keyof Project>(field: K, value: Project[K]) => {
@@ -43,12 +48,14 @@ const ProjectAdder = () => {
 
   const handleUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value != '') {
-      const user= userList.find((user) => user.name === e.target.value);
-      if(user != undefined){
+      const user = userList.find((user) => user.name === e.target.value);
+      if (user != undefined) {
         setSelectedUser(user);
       } else {
-        alert("Invalid user");
+        alert('Invalid user');
       }
+    } else {
+      alert('Invalid user.');
     }
   };
 
@@ -98,7 +105,7 @@ const ProjectAdder = () => {
                 Assign this project to:
               </option>
               {userList.map((user) => (
-                <option value={user.name}>{user.name}</option>
+                <option>{user.name}</option>
               ))}
             </select>
             <button type="submit" className="btn btn-primary">
