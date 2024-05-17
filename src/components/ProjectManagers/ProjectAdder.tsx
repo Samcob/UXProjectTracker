@@ -27,17 +27,18 @@ const ProjectAdder = () => {
   //debugging tool checking to see if various steps are being met
   useEffect(() => {
     const user = userList.find((user) => user.name === selectedUser.name);
-    console.log(user);
-    console.log(userList);
+    // console.log(user);
+    // console.log(userList);
   }, [selectedUser, userList]);
 
   const handleSubmit = () => {
     if (selectedUser != undefined) {
+      console.log('handleSubmit called');
       addProject(selectedUser, project);
     } else {
       alert('Unable to find selected User.');
     }
-    setProject(defaultProject);
+    // setProject(defaultProject);
   };
 
   const handleChange = <K extends keyof Project>(field: K, value: Project[K]) => {
@@ -46,6 +47,7 @@ const ProjectAdder = () => {
     setProject(newProject);
   };
 
+  //TODO: try to find a way to reference the user.id instead of user.name
   const handleUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value != '') {
       const user = userList.find((user) => user.name === e.target.value);
