@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { User, Project } from '../src/types/user';
+import { User, Project, Update } from '../src/types/user';
 import { produce } from 'immer';
 
 type UserStore = {
@@ -12,8 +12,9 @@ type UserStore = {
   removeUser: (id: string) => void;
   isEmpty: () => boolean;
   addProject: (user: User, project: Project) => void;
+  getProject: (projName: string) => void;
   // removeProject: (projName: string) => void;
-  // addUpdates: (updates: []) => void;
+  addUpdate: (updates: Update[]) => void;
   // removeUpdate: (id: string) => void;
 };
 
@@ -53,13 +54,20 @@ export const useUserStore = create<UserStore>()(
       addProject: (user, project) => {
         const { userList } = get();
         const userIndex = userList.findIndex((relUser) => relUser.id === user.id);
-        set(produce((state: UserStore) => state.userList[userIndex].projects.push(project)));
-        // set((state) => ({
-        //   // userList: {...state.userList, userList[userIndex]: {...state.userList[userIndex].projects, project}}
-        //   userList: [...state.userList, selectedUser: [...state.userList[userIndex].projects, project]],
-
-        // }))
+        set(
+          produce((state: UserStore) => {
+            state.userList[userIndex].projects.push(project);
+          })
+        );
       },
+      getProject: (projName) => {
+        const { userList } = get();
+        const foundProject = userList.find((user) =>
+          user.projects.find((relProject) => relProject.projName === projName)
+        );
+        return foundProject;
+      },
+      addUpdate: (updates) => {},
     })),
     {
       name: 'user-list',
@@ -85,9 +93,7 @@ export const useUserStore = create<UserStore>()(
   // addProject: (projects: []) => {
 
   // },
-  // addUpdates: (updates: []) => {
 
-  // },
   // removeProject: (projName: string) => {
 
   // },

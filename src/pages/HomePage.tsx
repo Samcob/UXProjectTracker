@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import Footer from '../components/Footer/Footer';
+// import Footer from '../components/Footer/Footer';
 import AppBar from '../components/AppBar/AppBar';
 import ProjectAdder from '../components/ProjectManagers/ProjectAdder';
 import DisplayTable from '../components/Tables/DisplayTable';
+import UpdateAdder from '../components/ProjectManagers/UpdateAdder';
 
 const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,10 @@ const HomePage = () => {
             <ProjectAdder />
           </div>
         </div>
-        <Footer />
+        <div className="flex">
+          <UpdateAdder />
+        </div>
+        {/* <Footer /> */}
       </div>
     </>
   );

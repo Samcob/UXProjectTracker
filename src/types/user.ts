@@ -1,8 +1,10 @@
-export interface Updates {
-    name: string;
+export interface Update {
+    id: string,
+    projName: string,
+    madeBy: string;
     date: string;
     hours: number;
-    updates: string;
+    description: string;
 }
 
 export interface Project {
@@ -10,8 +12,8 @@ export interface Project {
     projName: string;
     projTicket: string;
     projSprint: number;
-    projUpdates: Updates[];
-    projHistory: Updates[];
+    projUpdates: Update[];
+    projHistory: Update[];
 }
 
 export interface User {

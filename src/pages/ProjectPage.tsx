@@ -17,12 +17,13 @@ const ProjectPage = () => {
   return (
     <>
       <AppBar isOpen={isOpen} setIsOpen={setIsOpen} />
-      {console.log(project)}
-      <div className="flex p-8">
-        <h1 className="text-lg font-bold text-red-600">{project.projName}</h1>
-        <br />
-        <br />
-        <h2> You are viewing the {project.projName} project page!!</h2>
+      <div className="inset-y-0  w-full flex-1">
+        <div className="flex h-full justify-center overflow-y-auto py-5">
+          <div className="flex-row">
+            <h1 className="text-xl font-bold text-black">{project.projName}</h1>
+            <h2> You are viewing the {project.projName} project page!!</h2>
+          </div>
+        </div>
       </div>
       <Footer />
     </>
