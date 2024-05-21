@@ -181,9 +181,6 @@ export const UserAdder = (props: AdduserDialogProps) => {
                       Delete
                     </button>
                   </div>
-                  {/* {index >= 1 && index !== projects.length && (
-                    <hr className="border-1 border-gray-400" />
-                  )} */}
                 </>
               ))}
             </div>

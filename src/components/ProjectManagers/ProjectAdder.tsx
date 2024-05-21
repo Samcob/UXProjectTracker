@@ -1,40 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUserStore } from '../../store';
-import { Project, User } from '../../types/user';
+import { Project } from '../../types/user';
 import { nanoid } from 'nanoid';
 
 const ProjectAdder = () => {
-  const defaultProject = {
+  //TODO: Ask Chris why this was changed to a function.
+  const defaultProject = () => ({
     id: nanoid(),
     projName: '',
     projTicket: '',
     projSprint: 0,
     projUpdates: [],
     projHistory: [],
-  };
+  });
 
-  const defaultUser = {
-    id: '',
-    name: '',
-    email: '',
-    projects: [],
-  };
+  // const defaultUser = {
+  //   id: '',
+  //   name: '',
+  //   email: '',
+  //   projects: [],
+  // };
 
   const { userList, addProject } = useUserStore();
-  const [selectedUser, setSelectedUser] = useState<User>(defaultUser);
-  const [project, setProject] = useState<Project>(defaultProject);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [project, setProject] = useState<Project>(defaultProject());
 
-  //debugging tool checking to see if various steps are being met
-  useEffect(() => {
-    const user = userList.find((user) => user.name === selectedUser.name);
-    // console.log(user);
-    // console.log(userList);
-  }, [selectedUser, userList]);
-
-  const handleSubmit = () => {
-    if (selectedUser != undefined) {
-      console.log('handleSubmit called');
-      addProject(selectedUser, project);
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const user = userList.find((user) => user.id === selectedUser);
+    if (user != undefined) {
+      addProject(user, project);
+      setProject(defaultProject());
+      setSelectedUser('');
     } else {
       alert('Unable to find selected User.');
     }
@@ -42,23 +39,12 @@ const ProjectAdder = () => {
   };
 
   const handleChange = <K extends keyof Project>(field: K, value: Project[K]) => {
-    const newProject = project;
-    newProject[field] = value;
-    setProject(newProject);
+    setProject((prevProject) => ({ ...prevProject, [field]: value }));
   };
 
   //TODO: try to find a way to reference the user.id instead of user.name
-  const handleUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value != '') {
-      const user = userList.find((user) => user.name === e.target.value);
-      if (user != undefined) {
-        setSelectedUser(user);
-      } else {
-        alert('Invalid user');
-      }
-    } else {
-      alert('Invalid user.');
-    }
+  const handleUserSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedUser(event.target.value);
   };
 
   return (
@@ -100,14 +86,17 @@ const ProjectAdder = () => {
             </label>
             <select
               id="userSelect"
+              value={selectedUser}
               onChange={handleUserSelect}
               className="select select-bordered w-full max-w-xs"
             >
-              <option disabled selected>
+              <option disabled value="">
                 Assign this project to:
               </option>
-              {userList.map((user) => (
-                <option>{user.name}</option>
+              {userList.map((user, index) => (
+                <option key={index} value={user.id}>
+                  {user.name}
+                </option>
               ))}
             </select>
             <button type="submit" className="btn btn-primary">

@@ -1,25 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState /*useEffect*/ } from 'react';
 import { useUserStore } from '../../store';
 import { /*Project, User,*/ Update } from '../../types/user';
 import { nanoid } from 'nanoid';
 
 const UpdateAdder = () => {
-  // const defaultUser = {
-  //   id: nanoid(),
-  //   name: '',
-  //   email: '',
-  //   projects: [],
-  // };
-
-  // const defaultProject = {
-  //   id: nanoid(),
-  //   projName: '',
-  //   projTicket: '',
-  //   projSprint: 0,
-  //   projUpdates: [],
-  //   projHistory: [],
-  // };
-
   const defaultUpdate = {
     id: nanoid(),
     projName: '',
@@ -29,58 +13,46 @@ const UpdateAdder = () => {
     description: '',
   };
 
-  const { userList, /*getProject,*/ addUpdate } = useUserStore();
-  // const [selectedUser, setSelectedUser] = useState<User>(defaultUser);
-  // const [selectedProject, setSelectedProject] = useState<Project>(defaultProject);
+  const { userList, addUpdate } = useUserStore();
   const [updates, setUpdates] = useState<Array<Update>>([defaultUpdate]);
-  //debugging const below
-  const [tempUserList, setTempUserList] = useState(userList);
 
-  useEffect(() => {
-    console.log(tempUserList);
-  }, [tempUserList]);
-  //TODO: try to find a way to reference the user.id instead of user.name
-  // const handleUserSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   if (e.target.value != '') {
-  //     const user = userList.find((user) => user.name === e.target.value);
-  //     if (user != undefined) {
-  //       setSelectedUser(user);
-  //     } else {
-  //       alert('Invalid user');
-  //     }
-  //   } else {
-  //     alert('Invalid user.');
-  //   }
-  // };
+  // Debugging to view userList
+  // useEffect(() => {
+  //   console.log(updates);
+  // }, [updates]);
 
-  //TODO: try to find a way to reference the project.id instead of project.name
-  //TODO: Do I need to grab the ACTUAL User and project objects, or should I
-  //just pass strings and handle the grabbing in store?
-  // const handleProjectSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   if (e.target.value != '') {
-  //     const project = getProject(e.target.value);
-  //     if (project != undefined) {
-  //       setSelectedProject(project);
-  //     } else {
-  //       alert('Invalid project');
-  //     }
-  //   } else {
-  //     alert('Invalid project.');
-  //   }
-  // };
+  const handleSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    index: number,
+    field: string,
+    value: string
+  ) => {
+    event.preventDefault();
+    console.log(event, index, field, value);
+    const newUpdates = [...updates];
+    if (field === 'madeBy') {
+      newUpdates[index].madeBy = value;
+    }
+    if (field === 'projName') {
+      newUpdates[index].projName = value;
+    }
+    setUpdates(newUpdates);
+  };
 
   const handleUpdateChange = <K extends keyof Update>(
     index: number,
     field: K,
     value: Update[K]
   ) => {
-    const newUpdates = updates;
+    console.log('field: ', field, 'value: ', value);
+    const newUpdates = [...updates];
     newUpdates[index][field] = value;
     setUpdates(newUpdates);
+    // setUpdates((prevUpdates) => ({ ...prevUpdates, [prevUpdates[index][field]]: value }));
   };
 
   const handleAddUpdate = () => {
-    // if (updates.length < 3) {
+    // const index = updates.length - 1;
     const newUpdate = {
       id: nanoid(),
       projName: '',
@@ -89,8 +61,12 @@ const UpdateAdder = () => {
       hours: 0,
       description: '',
     };
-    setUpdates([...updates, newUpdate]);
+    //TODO: preserved date and madeBy fields from previous entry. Can't work without value={} props on inputs and selects
+    // if (index > 0) {
+    //   newUpdate.date = updates[index].date;
+    //   newUpdate.madeBy = updates[index].madeBy;
     // }
+    setUpdates([...updates, newUpdate]);
   };
 
   const handleRemoveUpdate = (index: number) => {
@@ -98,20 +74,16 @@ const UpdateAdder = () => {
     newUpdates.splice(index, 1);
     setUpdates(newUpdates);
   };
-  //running but not adding to updates list
+
+  //need to keep value if refreshed but not reselected from dropdown
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    updates.map((update) => {
-      const userIndex = userList.findIndex((user) => user.name === update.madeBy);
-      const projIndex = userList[userIndex].projects.findIndex(
-        (project) => project.projName === update.projName
-      );
-      const newUserList = [...tempUserList];
-      [...newUserList[userIndex].projects[projIndex].projUpdates, [updates]];
-      setTempUserList(newUserList);
-    });
-    // addUpdate(updates);
+    if (updates) {
+      addUpdate(updates);
+      setUpdates([defaultUpdate]);
+    } else {
+      alert('Invalid update request.');
+    }
   };
 
   return (
@@ -134,38 +106,46 @@ const UpdateAdder = () => {
                 <tr className="">
                   <th className="align-top">
                     <select
-                      id="userSelect"
-                      onChange={(e) => handleUpdateChange(index, 'projName', e.target.value)}
+                      id="projSelect"
+                      // onChange={(e) => handleUpdateChange(index, 'projName', e.target.value)}
+                      onChange={(e) => handleSelectChange(e, index, 'projName', e.target.value)}
                       className="select select-bordered w-full max-w-xs"
                     >
                       <option disabled selected>
                         Project:
                       </option>
                       {userList.map((user) =>
-                        user.projects.map((project) => <option>{project.projName}</option>)
+                        user.projects.map((project) => (
+                          <option key={nanoid()} value={update.projName}>
+                            {project.projName}
+                          </option>
+                        ))
                       )}
                     </select>
                   </th>
                   <td className="align-top">
                     <select
                       id="userSelect"
-                      onChange={(e) => handleUpdateChange(index, 'madeBy', e.target.value)}
+                      // onChange={(e) => handleUpdateChange(index, 'madeBy', e.target.value)}
+                      onChange={(e) => handleSelectChange(e, index, 'madeBy', e.target.value)}
                       className="select select-bordered w-full max-w-xs"
                     >
+                      {/* TODO: setting defaultValue={update.madeBy} allows for retaining previous name, but created bugs */}
                       <option disabled selected>
                         Name:
                       </option>
                       {userList.map((user) => (
-                        <option>{user.name}</option>
+                        <option key={nanoid()} value={update.madeBy}>
+                          {user.name}
+                        </option>
                       ))}
                     </select>
                   </td>
                   <td className="align-top">
-                    {/* TODO: Adding value={update.date} disallows input field changing when typing */}
                     <input
                       type="text"
-                      // value={update.date}
                       placeholder="MM/DD/YYYY"
+                      value={update.date}
                       onChange={(e) => handleUpdateChange(index, 'date', e.target.value)}
                       className="input input-bordered w-full max-w-xs"
                     />
@@ -173,7 +153,7 @@ const UpdateAdder = () => {
                   <td className="align-top">
                     <input
                       type="number"
-                      // value={update.hours}
+                      value={update.hours}
                       placeholder="Hours"
                       onChange={(e) => handleUpdateChange(index, 'hours', +e.target.value)}
                       className="input input-bordered w-full max-w-xs"
@@ -183,6 +163,7 @@ const UpdateAdder = () => {
                     <textarea
                       id="text"
                       rows={2}
+                      value={update.description}
                       placeholder="Description"
                       onChange={(e) => handleUpdateChange(index, 'description', e.target.value)}
                       className="textarea textarea-bordered w-full max-w-xs"

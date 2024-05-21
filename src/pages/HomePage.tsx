@@ -8,7 +8,6 @@ import UpdateAdder from '../components/ProjectManagers/UpdateAdder';
 
 const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  //   const { reset } = useUserStore();
 
   return (
     <>

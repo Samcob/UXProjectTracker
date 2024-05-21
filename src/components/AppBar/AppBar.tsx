@@ -45,7 +45,7 @@ const AppBar = ({ isOpen, setIsOpen }: IAppbarProps) => {
             </nav>
           </div>
           <div>
-            <button className-="flex-none " onClick={() => setIsOpen(!isOpen)}>
+            <button className="flex-none " onClick={() => setIsOpen(!isOpen)}>
               <Bars3Icon className="h-10 w-10 stroke-white" />
               <div className=" text-s w-full text-center font-medium capitalize text-secondary-font-color">
                 Menu
