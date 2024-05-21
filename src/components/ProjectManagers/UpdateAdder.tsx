@@ -126,8 +126,8 @@ const UpdateAdder = () => {
                   <td className="align-top">
                     <select
                       id="userSelect"
-                      // onChange={(e) => handleUpdateChange(index, 'madeBy', e.target.value)}
-                      onChange={(e) => handleSelectChange(e, index, 'madeBy', e.target.value)}
+                      onChange={(e) => handleUpdateChange(index, 'madeBy', e.target.value)}
+                      // onChange={(e) => handleSelectChange(e, index, 'madeBy', e.target.value)}
                       className="select select-bordered w-full max-w-xs"
                     >
                       {/* TODO: setting defaultValue={update.madeBy} allows for retaining previous name, but created bugs */}
