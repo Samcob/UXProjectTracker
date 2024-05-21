@@ -21,23 +21,23 @@ const UpdateAdder = () => {
   //   console.log(updates);
   // }, [updates]);
 
-  const handleSelectChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-    index: number,
-    field: string,
-    value: string
-  ) => {
-    event.preventDefault();
-    console.log(event, index, field, value);
-    const newUpdates = [...updates];
-    if (field === 'madeBy') {
-      newUpdates[index].madeBy = value;
-    }
-    if (field === 'projName') {
-      newUpdates[index].projName = value;
-    }
-    setUpdates(newUpdates);
-  };
+  // const handleSelectChange = (
+  //   event: React.ChangeEvent<HTMLSelectElement>,
+  //   index: number,
+  //   field: string,
+  //   value: string
+  // ) => {
+  //   event.preventDefault();
+  //   console.log(event, index, field, value);
+  //   const newUpdates = [...updates];
+  //   if (field === 'madeBy') {
+  //     newUpdates[index].madeBy = value;
+  //   }
+  //   if (field === 'projName') {
+  //     newUpdates[index].projName = value;
+  //   }
+  //   setUpdates(newUpdates);
+  // };
 
   const handleUpdateChange = <K extends keyof Update>(
     index: number,
@@ -107,8 +107,8 @@ const UpdateAdder = () => {
                   <th className="align-top">
                     <select
                       id="projSelect"
-                      // onChange={(e) => handleUpdateChange(index, 'projName', e.target.value)}
-                      onChange={(e) => handleSelectChange(e, index, 'projName', e.target.value)}
+                      onChange={(e) => handleUpdateChange(index, 'projName', e.target.value)}
+                      // onChange={(e) => handleSelectChange(e, index, 'projName', e.target.value)}
                       className="select select-bordered w-full max-w-xs"
                     >
                       <option disabled selected>
