@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      spacing: {
+        '128': '32rem',
+      },
       colors: {
         'dha-dark-blue': {
           DEFAULT: '#07192D',

@@ -81,12 +81,14 @@ export const useUserStore = create<UserStore>()(
           set(
             produce((draft: UserStore) => {
               updates.map((update) => {
-                const uIndex = draft.userList.findIndex((u) => u.name === update.madeBy);
-                const projectToUpdate = draft.userList[uIndex].projects.find(
+                const projOwnerIndex = draft.userList.findIndex((u) =>
+                  u.projects.find((p) => p.projName === update.projName)
+                );
+                const projectToUpdate = draft.userList[projOwnerIndex].projects.find(
                   (p) => p.projName === update.projName
                 );
-                console.log(draft.userList[uIndex].projects);
                 if (projectToUpdate) {
+                  projectToUpdate.projHours += update.hours;
                   projectToUpdate.projUpdates.push(update);
                 }
               });

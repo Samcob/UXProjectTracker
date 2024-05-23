@@ -52,6 +52,7 @@ export const UserAdder = (props: AdduserDialogProps) => {
 
     if (result.success) {
       addUser(newUser);
+      (document.getElementById('addUserModal') as HTMLDialogElement).close();
     } else {
       //continue form validation here
       console.error(result.error.errors);
@@ -87,7 +88,8 @@ export const UserAdder = (props: AdduserDialogProps) => {
         id: nanoid(),
         projName: '',
         projTicket: '',
-        projSprint: 0,
+        projHours: 0,
+        currentSprint: 1,
         projUpdates: [],
         projHistory: [],
       };
@@ -109,7 +111,7 @@ export const UserAdder = (props: AdduserDialogProps) => {
       >
         Add User
       </button>
-      <dialog id="addUserModal" className="modal">
+      <dialog id="addUserModal" className="modal sm:modal-middle">
         <div className="modal-box w-7/12 max-w-7xl p-8">
           <h1 className="text-xl font-semibold">Add a New User</h1>
           <form onSubmit={handleSubmit}>

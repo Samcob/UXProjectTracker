@@ -9,17 +9,11 @@ const ProjectAdder = () => {
     id: nanoid(),
     projName: '',
     projTicket: '',
-    projSprint: 0,
+    currentSprint: 1,
+    projHours: 0,
     projUpdates: [],
     projHistory: [],
   });
-
-  // const defaultUser = {
-  //   id: '',
-  //   name: '',
-  //   email: '',
-  //   projects: [],
-  // };
 
   const { userList, addProject } = useUserStore();
   const [selectedUser, setSelectedUser] = useState('');

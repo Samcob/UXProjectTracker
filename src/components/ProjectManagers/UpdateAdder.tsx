@@ -10,6 +10,8 @@ const UpdateAdder = () => {
     madeBy: '',
     date: '',
     hours: 0,
+    sprint: 0,
+    sprintTicket: '',
     description: '',
   };
 
@@ -21,30 +23,11 @@ const UpdateAdder = () => {
   //   console.log(updates);
   // }, [updates]);
 
-  // const handleSelectChange = (
-  //   event: React.ChangeEvent<HTMLSelectElement>,
-  //   index: number,
-  //   field: string,
-  //   value: string
-  // ) => {
-  //   event.preventDefault();
-  //   console.log(event, index, field, value);
-  //   const newUpdates = [...updates];
-  //   if (field === 'madeBy') {
-  //     newUpdates[index].madeBy = value;
-  //   }
-  //   if (field === 'projName') {
-  //     newUpdates[index].projName = value;
-  //   }
-  //   setUpdates(newUpdates);
-  // };
-
   const handleUpdateChange = <K extends keyof Update>(
     index: number,
     field: K,
     value: Update[K]
   ) => {
-    console.log('field: ', field, 'value: ', value);
     const newUpdates = [...updates];
     newUpdates[index][field] = value;
     setUpdates(newUpdates);
@@ -59,6 +42,8 @@ const UpdateAdder = () => {
       madeBy: '',
       date: '',
       hours: 0,
+      sprint: 0,
+      sprintTicket: '',
       description: '',
     };
     //TODO: preserved date and madeBy fields from previous entry. Can't work without value={} props on inputs and selects
@@ -89,34 +74,34 @@ const UpdateAdder = () => {
   return (
     <div className="card mt-8 w-full bg-white shadow-xl outline outline-1 outline-slate-300">
       <div className="card-body">
-        <h2 className="card-title">Daily Project Updates</h2>
+        <h2 className="card-title text-2xl">Daily Project Updates</h2>
         <form onSubmit={handleSubmit}>
           <table className="table table-lg">
             <thead>
               <tr>
-                <th className="">Project</th>
-                <th className="">Name</th>
-                <th className="">Date</th>
-                <th className="">Hours</th>
-                <th className="">Details</th>
+                <th className="text-xl">Project</th>
+                <th className="text-xl">Name</th>
+                <th className="text-xl">Date</th>
+                <th className="text-xl">Hours</th>
+                <th className="text-xl">Details</th>
               </tr>
             </thead>
             <tbody>
               {updates.map((update, index) => (
-                <tr className="">
+                <tr key={update.id} className="">
                   <th className="align-top">
                     <select
                       id="projSelect"
+                      value={update.projName}
                       onChange={(e) => handleUpdateChange(index, 'projName', e.target.value)}
-                      // onChange={(e) => handleSelectChange(e, index, 'projName', e.target.value)}
                       className="select select-bordered w-full max-w-xs"
                     >
-                      <option disabled selected>
+                      <option disabled value="">
                         Project:
                       </option>
                       {userList.map((user) =>
                         user.projects.map((project) => (
-                          <option key={nanoid()} value={update.projName}>
+                          <option key={project.id} value={project.projName}>
                             {project.projName}
                           </option>
                         ))
@@ -127,15 +112,14 @@ const UpdateAdder = () => {
                     <select
                       id="userSelect"
                       onChange={(e) => handleUpdateChange(index, 'madeBy', e.target.value)}
-                      // onChange={(e) => handleSelectChange(e, index, 'madeBy', e.target.value)}
+                      value={update.madeBy}
                       className="select select-bordered w-full max-w-xs"
                     >
-                      {/* TODO: setting defaultValue={update.madeBy} allows for retaining previous name, but created bugs */}
-                      <option disabled selected>
+                      <option disabled value="">
                         Name:
                       </option>
                       {userList.map((user) => (
-                        <option key={nanoid()} value={update.madeBy}>
+                        <option key={user.id} value={user.name}>
                           {user.name}
                         </option>
                       ))}
